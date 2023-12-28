@@ -1,5 +1,5 @@
 pipeline {
-    agent { lable 'Jenkins Agent' }
+    agent { lable 'Jenkins-Agent' }
     tools {
         jdk 'Java17'
         maven 'Maven3'
@@ -13,7 +13,7 @@ pipeline {
       
         stage("Checkout from SCM") {
             steps {
-            git branach: 'main', crendentialsId: 'github', url: 'https://github.com/Naveen0022/Practice.git'
+            git branch: 'main', credentialsId: 'github', url: 'https://github.com/Naveen0022/Practice.git'
             }
         }
         stage('Build Application') {
