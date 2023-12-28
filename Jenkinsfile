@@ -1,0 +1,36 @@
+pipeline {
+    agent { lable 'Jenkins Agent' }
+    tools {
+        jdk 'Java17'
+        maven 'Maven3'
+    }
+    stages {
+        stage("Cleanup Workspace") {
+            steps {
+            cleanWs()
+            }
+        }
+      
+        stage("Checkout from SCM") {
+            steps {
+            git branach: 'main', crendentialsId: 'github', url: 'https://github.com/Naveen0022/Practice.git'
+            }
+        }
+        stage('Build Application') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+        stage('Test Application') {
+            steps { 
+                  sh 'mvn test'
+            }
+        }
+    }
+}
+
+
+
+
+
+  
