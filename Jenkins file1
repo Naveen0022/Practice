@@ -1,0 +1,38 @@
+node{
+
+def mavenHome = tool name: "maven3.8.5"
+
+//Checkout Stage
+stage('checkout'){
+git credentialsId: 'cbc83832-1075-4a9b-87fd-5c796df211df', url: 'https://github.com/Naveen0022/maven-web-application.git'
+}
+
+//Build Stage
+stage('Build'){
+sh "$mavenHome/bin/mvn clean package"
+}
+
+//Genarate SonarQube Report
+stage('SonarQubeReport'){
+sh "$mavenHome/bin/mvn sonar:sonar"
+}
+
+//Upload artifact into Artifactory repo
+stage('UploadartifactintoNexus'){
+sh "$mavenHome/bin/mvn deploy"
+}
+
+//Deploy into a tomcat server
+stage('DeployAppintoTomcatServer'){
+sshagent(['fdce43ef-0966-48d5-87b3-550a9c54e6e3']) {
+   sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@65.2.57.210:/opt/tomcat9/webapps"
+
+}
+}
+
+}
+
+
+
+
+
